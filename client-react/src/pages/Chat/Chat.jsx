@@ -70,13 +70,12 @@ const Chat = () => {
         <LogoSearch />
         <div className="Chat-container">
           <h2>Chats</h2>
-          <div className="Chat-list">
-            {chats.map((chat) => (
+          {chats.map((chat,index) => (
+            <div className="Chat-list" key={index}>
               <div
                 onClick={() => {
                   setCurrentChat(chat);
                 }}
-                key={user._id}
               >
                 <Conversation
                   data={chat}
@@ -84,15 +83,21 @@ const Chat = () => {
                   online={checkOnlineStatus(chat)}
                 />
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
       </div>
 
       {/* Right Side */}
 
       <div className="Right-side-chat">
-        <div style={{ width: "20rem", alignSelf: "flex-end" }}>
+        <div
+          style={{
+            width: "20rem",
+            alignSelf: "flex-end",
+            textAlign: "end",
+          }}
+        >
           <NavIcons />
         </div>
         <ChatBox

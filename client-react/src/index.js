@@ -8,14 +8,20 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+import { PrimeReactProvider } from "primereact/api";
+import "primereact/resources/themes/md-light-indigo/theme.css"; // theme
+import "primeicons/primeicons.css";
+
 ReactDOM.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Routes>
-        <Route path="*" element={<App />} />
-      </Routes>
-    </BrowserRouter>
-  </Provider>,
+  <PrimeReactProvider>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="*" element={<App />} />
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+  </PrimeReactProvider>,
   document.getElementById("root")
 );
 
