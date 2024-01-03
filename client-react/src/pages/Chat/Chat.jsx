@@ -20,6 +20,8 @@ const Chat = () => {
   const [currentChat, setCurrentChat] = useState(null);
   const [sendMessage, setSendMessage] = useState(null);
   const [receivedMessage, setReceivedMessage] = useState(null);
+  const [typingUser, setTypingUser] = useState("");
+
   // Get the chat in chat section
   useEffect(() => {
     const getChats = async () => {
@@ -57,7 +59,23 @@ const Chat = () => {
     });
   }, []);
 
+  useEffect(() => {
+    socket?.current?.on("user-typing", (user) => {    
+      console.log(user);
+      setTypingUser(user);
+    });
+  }, []);
+
+  useEffect(() => {
+    socket?.current?.on("user-stop-typing", (user) => {
+      console.log(user);
+      setTypingUser(user);
+    });
+  }, []);
+
   const checkOnlineStatus = (chat) => {
+    console.log(onlineUsers);
+    console.log(chat.members);
     const chatMember = chat.members.find((member) => member !== user._id);
     const online = onlineUsers.find((user) => user.userId === chatMember);
     return online ? true : false;
@@ -70,7 +88,7 @@ const Chat = () => {
         <LogoSearch />
         <div className="Chat-container">
           <h2>Chats</h2>
-          {chats.map((chat,index) => (
+          {chats.map((chat, index) => (
             <div className="Chat-list" key={index}>
               <div
                 onClick={() => {
@@ -105,6 +123,8 @@ const Chat = () => {
           currentUser={user._id}
           setSendMessage={setSendMessage}
           receivedMessage={receivedMessage}
+          socket={socket}
+          typingUser={typingUser}
         />
       </div>
     </div>

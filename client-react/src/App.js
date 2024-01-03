@@ -11,12 +11,12 @@ function App() {
   return (
     <div
       className="App"
-      style={{
-        height:
-          window.location.href === "http://localhost:3000/chat"
-            ? "calc(100vh - 2rem)"
-            : "auto",
-      }}
+      // style={{
+      //   height:
+      //     window.location.href === "http://localhost:3000/chat"
+      //       ? "calc(100vh - 2rem)"
+      //       : "100%",
+      // }}
     >
       <Routes>
         <Route

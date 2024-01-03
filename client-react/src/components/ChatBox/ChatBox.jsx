@@ -6,13 +6,23 @@ import "./ChatBox.css";
 import { format } from "timeago.js";
 import InputEmoji from "react-input-emoji";
 
-const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
+const ChatBox = ({
+  chat,
+  currentUser,
+  setSendMessage,
+  receivedMessage,
+  socket,
+  typingUser,
+}) => {
   const [userData, setUserData] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
   const handleChange = (newMessage) => {
     setNewMessage(newMessage);
+    console.log("userData",userData?.firstname);
+    if (newMessage === "") socket.current.emit("stop-typing", userData?.firstname);
+    else socket.current.emit("typing", userData?.firstname);
   };
 
   // fetching data for header
@@ -70,6 +80,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
     } catch {
       console.log("error");
     }
+    socket.current.emit("stop-typing", userData?.firstname);
   };
 
   // Receive Message from parent component
@@ -132,6 +143,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage, receivedMessage }) => {
                   <span>{format(message.createdAt)}</span>
                 </div>
               ))}
+              {typingUser && "typing..."}
             </div>
             {/* chat-sender */}
             <div className="chat-sender">

@@ -14,6 +14,7 @@ io.on("connection", (socket) => {
       activeUsers.push({ userId: newUserId, socketId: socket.id });
       console.log("New User Connected", activeUsers);
     }
+    console.log("old", activeUsers);
     // send all active users to new user
     io.emit("get-users", activeUsers);
   });
@@ -30,10 +31,20 @@ io.on("connection", (socket) => {
   socket.on("send-message", (data) => {
     const { receiverId } = data;
     const user = activeUsers.find((user) => user.userId === receiverId);
-    console.log("Sending from socket to :", receiverId)
-    console.log("Data: ", data)
+    console.log("Sending from socket to :", receiverId);
+    console.log("Data: ", data);
     if (user) {
       io.to(user.socketId).emit("recieve-message", data);
     }
+  });
+
+  // send typing status = typing
+  socket.on("typing", (user) => {
+    io.emit("user-typing", user);
+  });
+
+  // send typing status = stopped
+  socket.on("stop-typing", (user) => {
+    io.emit("user-stop-typing", user);
   });
 });
